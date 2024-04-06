@@ -390,6 +390,7 @@ export default {
           }
         }
       });
+      this.$router.push({path: "/blog/article"});
     },
     // 删除按钮操作
     handleDelete(row) {
