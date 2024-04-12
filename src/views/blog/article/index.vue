@@ -276,13 +276,13 @@ export default {
   dicts: ['article_status', 'article_type', 'sys_yes_no'],
   data() {
     return {
-      //文章分类
+      // 文章分类
       categoryName: "",
-      //分类集合
+      // 分类集合
       categoryList: [],
-      //标签名
+      // 标签名
       tagName: "",
-      //标签名集合
+      // 标签名集合
       tagList: [],
       // 按钮loading
       buttonLoading: false,
@@ -387,7 +387,7 @@ export default {
 
   },
   methods: {
-    /** 查询文章列表列表 */
+    // 查询文章列表列表
     getList() {
       this.loading = true;
       listArticle(this.queryParams).then(response => {
@@ -426,12 +426,12 @@ export default {
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    // 搜索按钮操作
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** 重置按钮操作 */
+    // 重置按钮操作
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
@@ -442,17 +442,17 @@ export default {
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
+    // 新增按钮操作
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加文章列表";
     },
-    /** 新增跳转到新增界面 */
+    // 新增跳转到新增界面
     NewHandleAdd() {
       this.$router.push({path: "/blog/publish"});
     },
-    /** 修改按钮操作 */
+    // 修改按钮操作
     handleUpdate(row) {
       this.loading = true;
       this.reset();
@@ -464,11 +464,11 @@ export default {
         this.title = "修改文章列表";
       });
     },
-    /** 修改跳转界面 */
+    // 修改跳转界面
     editArticle(articleId) {
       this.$router.push({path: "/blog/publish", query: {articleId: articleId}});
     },
-    /** 提交按钮 */
+    // 提交按钮
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -493,7 +493,7 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    // 删除按钮操作
     handleDelete(row) {
       const ids = row.articleId || this.ids;
       this.$modal.confirm('是否确认删除文章列表编号为"' + ids + '"的数据项？').then(() => {
