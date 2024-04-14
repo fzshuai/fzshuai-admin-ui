@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: 'Fzshuai-Blog',
+      title: 'Fzshuai-Weblog',
       logo: logoImg
     }
   }

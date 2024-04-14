@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">Fzshuai-Blog 后台管理系统</h3>
+      <h3 class="title">Fzshuai-Weblog 后台管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -53,6 +53,20 @@
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
       </el-form-item>
+      <div style="display: flex;justify-content: flex-end;flex-direction: row;">
+        <el-button circle>
+          <svg-icon icon-class="qq" @click="doSocialLogin('QQ')" />
+        </el-button>
+        <el-button circle>
+          <svg-icon icon-class="wechat" @click="doSocialLogin('Wechat')" />
+        </el-button>
+        <el-button circle>
+          <svg-icon icon-class="gitee" @click="doSocialLogin('gitee')" />
+        </el-button>
+        <el-button circle>
+          <svg-icon icon-class="github" @click="doSocialLogin('github')" />
+        </el-button>
+      </div>
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
@@ -65,6 +79,7 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
+import { authBinding } from "@/api/system/social";
 
 export default {
   name: "Login",
@@ -148,6 +163,15 @@ export default {
               this.getCode();
             }
           });
+        }
+      });
+    },
+    doSocialLogin(source) {
+      authBinding(source).then(response => {
+        if (response.code === 200) {
+          window.location.href = response.msg;
+        } else {
+          this.$message.error(response.msg);
         }
       });
     }

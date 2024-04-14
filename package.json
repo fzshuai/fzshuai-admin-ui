@@ -1,7 +1,7 @@
 {
-  "name": "Fzshuai-Blog",
+  "name": "Fzshuai-Weblog",
   "version": "2.1.0",
-  "description": "Fzshuai-Blog 后台管理系统",
+  "description": "Fzshuai-Weblog 后台管理系统 UI 工程",
   "author": "fzshuai",
   "license": "MIT",
   "scripts": {
@@ -56,7 +56,7 @@
     "nprogress": "0.2.0",
     "path": "^0.12.7",
     "quill": "1.3.7",
-    "screenfull": "5.0.2", 
+    "screenfull": "5.0.2",
     "sortablejs": "1.15.2",
     "vue": "^2.7.16",
     "vue-calendar-heatmap": "^0.8.4",

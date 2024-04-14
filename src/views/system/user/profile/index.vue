@@ -51,6 +51,9 @@
             <el-tab-pane label="修改密码" name="resetPwd">
               <resetPwd />
             </el-tab-pane>
+            <el-tab-pane label="第三方应用" name="thirdParty">
+              <thirdParty :auths="auths" />
+            </el-tab-pane>
           </el-tabs>
         </el-card>
       </el-col>
@@ -62,21 +65,25 @@
 import userAvatar from "./userAvatar";
 import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
+import thirdParty from "./thirdParty";
+import { getAuthList } from "@/api/system/social";
 import { getUserProfile } from "@/api/system/user";
 
 export default {
   name: "Profile",
-  components: { userAvatar, userInfo, resetPwd },
+  components: { userAvatar, userInfo, resetPwd, thirdParty },
   data() {
     return {
       user: {},
       roleGroup: {},
       postGroup: {},
+      auths: [],
       activeTab: "userinfo"
     };
   },
   created() {
     this.getUser();
+    this.getAuths();
   },
   methods: {
     getUser() {
@@ -84,6 +91,11 @@ export default {
         this.user = response.data.user;
         this.roleGroup = response.data.roleGroup;
         this.postGroup = response.data.postGroup;
+      });
+    },
+    getAuths() {
+    	getAuthList().then(response => {
+        this.auths = response.data;
       });
     }
   }
