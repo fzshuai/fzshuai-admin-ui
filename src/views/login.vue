@@ -1,73 +1,104 @@
 <template>
-  <div class="login">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">Fzshuai-Weblog 后台管理系统</h3>
-      <el-form-item prop="username">
-        <el-input
-          v-model="loginForm.username"
-          type="text"
-          auto-complete="off"
-          placeholder="账号"
-        >
-          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          auto-complete="off"
-          placeholder="密码"
-          @keyup.enter.native="handleLogin"
-        >
-          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input
-          v-model="loginForm.code"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter.native="handleLogin"
-        >
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
-        </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+  <div class="login-container">
+    <div class="login-card">
+      <el-form
+        ref="loginForm"
+        :model="loginForm"
+        :rules="loginRules"
+        class="login-form"
+      >
+        <div class="login-title">
+          <img src="../assets/logo/logo.png" class="login-title-logo" />
+          Fzshuai-Weblog 后台管理系统
         </div>
-      </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
-      <el-form-item style="width:100%;">
-        <el-button
-          :loading="loading"
-          size="medium"
-          type="primary"
-          style="width:100%;"
-          @click.native.prevent="handleLogin"
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginForm.username"
+            type="text"
+            auto-complete="off"
+            placeholder="账号"
+            class="login-form-input"
+          >
+            <svg-icon
+              slot="prefix"
+              icon-class="user"
+              class="el-input__icon input-icon"
+            />
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            auto-complete="off"
+            placeholder="密码"
+            @keyup.enter.native="handleLogin"
+            class="login-form-input"
+          >
+            <svg-icon
+              slot="prefix"
+              icon-class="password"
+              class="el-input__icon input-icon"
+            />
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="code" v-if="captchaEnabled">
+          <el-input
+            v-model="loginForm.code"
+            auto-complete="off"
+            placeholder="验证码"
+            style="width: 65%;"
+            @keyup.enter.native="handleLogin"
+            class="login-form-input"
+          >
+            <svg-icon
+              slot="prefix"
+              icon-class="validCode"
+              class="el-input__icon input-icon"
+            />
+          </el-input>
+          <div class="login-code">
+            <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+          </div>
+        </el-form-item>
+        <el-checkbox
+          v-model="loginForm.rememberMe"
+          style="margin: 0px 0px 25px 0px;"
+        >记住密码</el-checkbox
         >
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
-        </el-button>
-        <div style="float: right;" v-if="register">
-          <router-link class="link-type" :to="'/register'">立即注册</router-link>
+        <el-form-item style="width: 100%;">
+          <el-button
+            :loading="loading"
+            size="medium"
+            type="primary"
+            style="width:100%;"
+            @click.native.prevent="handleLogin"
+          >
+            <span v-if="!loading">登 录</span>
+            <span v-else>登 录 中...</span>
+          </el-button>
+          <div style="float: right;" v-if="register">
+            <router-link class="link-type" :to="'/register'">
+              立即注册
+            </router-link>
+          </div>
+        </el-form-item>
+        <div style="display: flex;justify-content: flex-end;flex-direction: row;">
+          <el-button circle>
+            <svg-icon icon-class="qq" @click="doSocialLogin('QQ')" />
+          </el-button>
+          <el-button circle>
+            <svg-icon icon-class="wechat" @click="doSocialLogin('Wechat')" />
+          </el-button>
+          <el-button circle>
+            <svg-icon icon-class="gitee" @click="doSocialLogin('gitee')" />
+          </el-button>
+          <el-button circle>
+            <svg-icon icon-class="github" @click="doSocialLogin('github')" />
+          </el-button>
         </div>
-      </el-form-item>
-      <div style="display: flex;justify-content: flex-end;flex-direction: row;">
-        <el-button circle>
-          <svg-icon icon-class="qq" @click="doSocialLogin('QQ')" />
-        </el-button>
-        <el-button circle>
-          <svg-icon icon-class="wechat" @click="doSocialLogin('Wechat')" />
-        </el-button>
-        <el-button circle>
-          <svg-icon icon-class="gitee" @click="doSocialLogin('gitee')" />
-        </el-button>
-        <el-button circle>
-          <svg-icon icon-class="github" @click="doSocialLogin('github')" />
-        </el-button>
-      </div>
-    </el-form>
+      </el-form>
+    </div>
     <!--  底部  -->
     <div class="el-login-footer">
       <span>Copyright © 2023 Fzshuai-Blog All Rights Reserved.</span>
@@ -180,61 +211,74 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-.login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
-  background-size: cover;
+.login-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: url("../assets/images/login-background.jpg") center center / cover
+  no-repeat;
 }
-.title {
+.login-card {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 120px 30px 180px;
+  width: 400px;
+}
+
+.login-title {
+  font-size: 20px;
   margin: 0px auto 30px auto;
   text-align: center;
   color: #707070;
 }
-
+.login-title-logo {
+  width: 35px;
+  height: 35px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
 .login-form {
-  border-radius: 6px;
-  background: #ffffff;
-  width: 400px;
-  padding: 25px 25px 5px 25px;
-  .el-input {
-    height: 38px;
-    input {
-      height: 38px;
-    }
+  margin-top: 1rem;
+  .login-form-input {
+    font-size: 16px;
   }
   .input-icon {
-    height: 39px;
+    height: 14px;
     width: 14px;
-    margin-left: 2px;
+    margin-left: 5px;
   }
 }
-.login-tip {
-  font-size: 13px;
-  text-align: center;
-  color: #bfbfbf;
+.input-icon {
+  height: 14px;
+  width: 14px;
+  margin-left: 5px;
 }
 .login-code {
-  width: 33%;
-  height: 38px;
+  width: 30%;
+  height: 35px;
   float: right;
   img {
+    height: 35px;
+    margin-left: 5px;
     cursor: pointer;
     vertical-align: middle;
   }
 }
 .el-login-footer {
-  height: 40px;
-  line-height: 40px;
+  height: 35px;
+  line-height: 35px;
   position: fixed;
   bottom: 0;
   width: 100%;
   text-align: center;
   color: #fff;
   font-family: Arial;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 1px;
 }
 .login-code-img {
