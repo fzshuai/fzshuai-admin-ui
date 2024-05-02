@@ -4,7 +4,7 @@
     <div class="title" style="  font-size: 16px;font-weight: bold;">{{ this.$route.meta.title }}</div>
     <!-- 相册信息 -->
     <div class="album-info">
-      <el-image fit="cover" class="album-cover" :src="albumInfo.albumCover" />
+      <el-image fit="cover" class="album-cover" :src="albumInfo.albumCover"/>
       <div class="album-detail">
         <div style="margin-bottom:0.6rem">
           <span class="album-name">{{ albumInfo.albumName }}</span>
@@ -59,21 +59,21 @@
     <!-- 照片列表 -->
     <el-row class="photo-container" :gutter="10" v-loading="loading">
       <!-- 空状态 -->
-      <el-empty v-if="photoList.length == 0" description="暂无照片" />
+      <el-empty v-if="photoList.length == 0" description="暂无照片"/>
       <el-checkbox-group
         v-model="selectPhotoIdList"
         @change="handleCheckedPhotoChange"
       >
-        <el-col :md="6" v-for="item of photoList" :key="item.id">
-          <el-checkbox :label="item.id">
+        <el-col :md="6" v-for="item of photoList" :key="item.photoId">
+          <el-checkbox :label="item.photoId">
             <div class="photo-item">
               <!-- 照片操作 -->
               <div class="photo-opreation">
                 <el-dropdown @command="handleCommand">
-                  <i class="el-icon-more" style="color:#fff" />
+                  <i class="el-icon-more" style="color:#fff"/>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item :command="JSON.stringify(item)">
-                      <i class="el-icon-edit" />编辑
+                      <i class="el-icon-edit"/>编辑
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -111,14 +111,14 @@
         <el-upload
           :headers="headers"
           v-show="uploadList.length > 0"
-          :action= "uploadImgUrl"
+          :action="uploadImgUrl"
           list-type="picture-card"
           :file-list="uploadList"
           multiple
           :on-success="upload"
           :on-remove="handleRemove"
         >
-          <i class="el-icon-plus" />
+          <i class="el-icon-plus"/>
         </el-upload>
 
         <div class="upload">
@@ -126,7 +126,7 @@
             :headers="headers"
             v-show="uploadList.length == 0"
             drag
-            :action= "uploadImgUrl"
+            :action="uploadImgUrl"
             multiple
             :on-success="upload"
             :show-file-list="false"
@@ -165,10 +165,10 @@
       </div>
       <el-form label-width="80px" size="medium" :model="photoForm">
         <el-form-item label="照片名称">
-          <el-input style="width:220px" v-model="photoForm.photoName" />
+          <el-input style="width:220px" v-model="photoForm.photoName"/>
         </el-form-item>
         <el-form-item label="照片描述">
-          <el-input style="width:220px" v-model="photoForm.photoDesc" />
+          <el-input style="width:220px" v-model="photoForm.photoDesc"/>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -181,12 +181,12 @@
     <!-- 批量删除对话框 -->
     <el-dialog :visible.sync="batchDeletePhoto" width="30%">
       <div class="dialog-title-container" slot="title">
-        <i class="el-icon-warning" style="color:#ff9900" />提示
+        <i class="el-icon-warning" style="color:#ff9900"/>提示
       </div>
       <div style="font-size:1rem">是否删除选中照片？</div>
       <div slot="footer">
         <el-button @click="batchDeletePhoto = false">取 消</el-button>
-        <el-button type="primary" @click="updatePhotoDelete(null)">
+        <el-button type="primary" @click="deletePhotoAlbum()">
           确 定
         </el-button>
       </div>
@@ -196,15 +196,15 @@
       <div class="dialog-title-container" slot="title">
         移动照片
       </div>
-      <el-empty v-if="albumList.length < 2" description="暂无其他相册" />
+      <el-empty v-if="albumList.length < 2" description="暂无其他相册"/>
       <el-form v-else label-width="80px" size="medium" :model="photoForm">
         <el-radio-group v-model="albumId">
           <div class="album-check-item">
             <template v-for="item of albumList">
               <el-radio
-                v-if="item.id != albumInfo.id"
-                :key="item.id"
-                :label="item.id"
+                v-if="item.albumId != albumInfo.albumId"
+                :key="item.albumId"
+                :label="item.albumId"
                 style="margin-bottom:1rem"
               >
                 <div class="album-check">
@@ -238,13 +238,15 @@
 import {getAlbum, listAlbum} from "@/api/blog/album";
 import {getToken} from "@/utils/auth";
 import {addPhoto, delPhoto, listPhoto, updatePhoto} from "@/api/blog/photo";
+
 export default {
+  name: "Photo",
   created() {
     this.getAlbumInfo();
     this.listAlbums();
     this.listPhotos();
   },
-  data: function() {
+  data: function () {
     return {
       uploadImgUrl: process.env.VUE_APP_BASE_API + "/system/oss/upload", // 上传的图片服务器地址,
       headers: {Authorization: 'Bearer ' + getToken()},
@@ -255,40 +257,37 @@ export default {
       editPhoto: false,
       movePhoto: false,
       batchDeletePhoto: false,
-      uploadList: [
-      ],
+      uploadList: [],
       // 表单参数
       form: {
-        albumid:null,
-        photoUrlList:[],
-        photoNameList:[]
-
+        albumId: null,
+        photoUrlList: [],
+        photoNameList: []
       },
       updatePhotoForm: {
         ids: [],
-        albumid:[]
-
+        albumId: []
       },
       photoList: [],
       photoIdList: [],
       selectPhotoIdList: [],
       albumList: [],
       albumInfo: {
-        id: null,
+        albumId: null,
         albumName: "",
         albumDesc: "",
         albumCover: "",
         photoCount: 0
       },
       UpdateAlbum: {
-        albumId:null,
-        newAlbumId:null
+        albumId: null,
+        newAlbumId: null
       },
       photoForm: {
-        id: null,
+        photoId: null,
         photoName: "",
         photoDesc: "",
-        albumid: null
+        albumId: null
       },
       albumId: null,
       current: 1,
@@ -296,8 +295,6 @@ export default {
       count: 0,
       // 查询参数
       queryParams: {
-        // pageNum: 1,
-        // pageSize: 10,
         albumId: undefined,
         photoName: undefined,
         photoDesc: undefined,
@@ -308,7 +305,7 @@ export default {
   },
   methods: {
     getAlbumInfo() {
-      getAlbum(this.$route.query.id).then(res =>{
+      getAlbum(this.$route.query.albumId).then(res => {
         this.albumInfo = res.data;
       })
     },
@@ -322,7 +319,7 @@ export default {
       });
     },
     listPhotos() {
-      this.queryParams.albumId = this.$route.query.id
+      this.queryParams.albumId = this.$route.query.albumId
       listPhoto(this.queryParams).then(res => {
         this.photoList = res.rows;
         this.count = res.total;
@@ -342,13 +339,13 @@ export default {
         this.form.photoUrlList.push(item.url)
         this.form.photoNameList.push(item.names)
       });
-      this.form.albumid = this.$route.query.id;
-      addPhoto(this.form).then(res=>{
-        if (res.code = 200){
+      this.form.albumId = this.$route.query.albumId;
+      addPhoto(this.form).then(res => {
+        if (res.code = 200) {
           this.$modal.msgSuccess("上传成功");
           this.uploadList = [];
           this.listPhotos();
-        }else {
+        } else {
           this.$modal.msgError("上传失败");
         }
       })
@@ -359,11 +356,11 @@ export default {
         this.$modal.msgError("照片名称不能为空");
         return false;
       }
-      updatePhoto(this.photoForm).then(res =>{
-        if (res.code == 200){
+      updatePhoto(this.photoForm).then(res => {
+        if (res.code == 200) {
           this.$modal.msgSuccess("修改成功")
           this.listPhotos();
-        }else {
+        } else {
           this.$modal.msgError("修改失败");
         }
         this.editPhoto = false;
@@ -371,14 +368,14 @@ export default {
 
     },
     updatePhotoAlbum() {
-      this.updatePhotoForm.albumid = this.albumId;
+      this.updatePhotoForm.albumId = this.albumId;
       this.updatePhotoForm.ids = this.selectPhotoIdList;
-      updatePhotoAlbum(this.updatePhotoForm).then(res =>{
-        if (res.code == 200){
+      updatePhotoAlbum(this.updatePhotoForm).then(res => {
+        if (res.code == 200) {
           this.$modal.msgSuccess("转移成功")
           this.getAlbumInfo();
           this.listPhotos();
-        }else {
+        } else {
           this.$modal.msgError(res.msg)
         }
         this.movePhoto = false;
@@ -392,8 +389,7 @@ export default {
       });
     },
     upload(response) {
-      this.uploadList.push({ url: response.data.url, names: response.data.fileName});
-      console.log(this.uploadList)
+      this.uploadList.push({url: response.data.url, names: response.data.fileName});
     },
     handleCheckAllChange(val) {
       this.selectPhotoIdList = val ? this.photoIdList : [];
@@ -409,21 +405,15 @@ export default {
       this.photoForm = JSON.parse(command);
       this.editPhoto = true;
     },
-    updatePhotoDelete(id) {
+    deletePhotoAlbum() {
       var param = {};
-      if (id == null) {
-        param = { ids: this.selectPhotoIdList};
-      } else {
-        param = { ids: [id]};
-      }
-      console.log(JSON.stringify(param)+"666")
-      delPhoto(param.ids).then(res =>{
-        if (res.code == 200){
+      param = {ids: this.selectPhotoIdList};
+      delPhoto(param.ids).then(res => {
+        if (res.code == 200) {
           this.$modal.msgSuccess("删除成功");
           this.listPhotos();
-        }else {
+        } else {
           this.$modal.msgError("删除失败")
-
         }
       })
       this.batchDeletePhoto = false;
@@ -446,85 +436,98 @@ export default {
   margin-top: 2.25rem;
   margin-bottom: 2rem;
 }
+
 .album-cover {
   border-radius: 4px;
   width: 5rem;
   height: 5rem;
 }
+
 .album-check-cover {
   border-radius: 4px;
   width: 4rem;
   height: 4rem;
 }
+
 .album-detail {
   padding-top: 0.4rem;
   margin-left: 0.8rem;
 }
+
 .album-desc {
   font-size: 14px;
   margin-right: 0.8rem;
 }
+
 .operation {
   padding-top: 1.5rem;
   margin-left: auto;
 }
+
 .all-check {
   display: inline-flex;
   align-items: center;
   margin-right: 1rem;
 }
+
 .check-count {
   margin-left: 1rem;
   font-size: 12px;
 }
+
 .album-name {
   font-size: 1.25rem;
 }
+
 .photo-count {
   font-size: 12px;
   margin-left: 0.5rem;
 }
+
 .photo-item {
   width: 100%;
   position: relative;
   cursor: pointer;
   margin-bottom: 1rem;
 }
+
 .photo-img {
   width: 100%;
   height: 10rem;
   border-radius: 4px;
 }
+
 .photo-name {
   font-size: 14px;
   margin-top: 0.3rem;
   text-align: center;
 }
+
 .upload-container {
   height: 400px;
 }
+
 .upload {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .upload-footer {
   display: flex;
   align-items: center;
 }
+
 .photo-opreation {
   position: absolute;
   z-index: 1000;
   top: 0.3rem;
   right: 0.5rem;
 }
+
 .album-check {
   display: flex;
   align-items: center;
-}
-
-.photo-container {
-
 }
 </style>

@@ -45,29 +45,29 @@
     <!-- 相册列表 -->
     <el-row class="album-container" :gutter="12" v-loading="loading">
       <!-- 空状态 -->
-      <el-empty v-if="albumList == null" description="暂无相册" />
+      <el-empty v-if="albumList == null" description="暂无相册"/>
       <el-col v-for="item of albumList" :key="item.albumId" :md="6">
         <div class="album-item" @click="checkPhoto(item)">
           <!-- 相册操作 -->
           <div class="album-opreation">
             <el-dropdown @command="handleCommand">
-              <i class="el-icon-more" style="color: #fff" />
+              <i class="el-icon-more" style="color: #fff"/>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="'update' + JSON.stringify(item)">
-                  <i class="el-icon-edit" />编辑
+                  <i class="el-icon-edit"/>编辑
                 </el-dropdown-item>
 
                 <el-dropdown-item :command="'delete' + item.albumId">
-                  <i class="el-icon-delete" />删除
+                  <i class="el-icon-delete"/>删除
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
           <div class="album-photo-count">
             <div>{{ item.photoCount }}</div>
-            <i v-if="item.status == 2" class="iconfont el-icon-mymima" />
+            <i v-if="item.status == 2" class="iconfont el-icon-mymima"/>
           </div>
-          <el-image fit="cover" class="album-cover" :src="item.albumCover" />
+          <el-image fit="cover" class="album-cover" :src="item.albumCover"/>
           <div class="album-name">{{ item.albumName }}</div>
         </div>
       </el-col>
@@ -85,13 +85,13 @@
     />
     <!-- 新增模态框 -->
     <el-dialog :visible.sync="addOrEdit" width="35%" top="10vh">
-      <div class="dialog-title-container" slot="title" ref="albumTitle" />
+      <div class="dialog-title-container" slot="title" ref="albumTitle"/>
       <el-form label-width="80px" size="medium" :model="albumForum">
         <el-form-item label="相册名称">
-          <el-input style="width: 220px" v-model="albumForum.albumName" />
+          <el-input style="width: 220px" v-model="albumForum.albumName"/>
         </el-form-item>
         <el-form-item label="相册描述">
-          <el-input style="width: 220px" v-model="albumForum.albumDesc" />
+          <el-input style="width: 220px" v-model="albumForum.albumDesc"/>
         </el-form-item>
         <el-form-item label="相册封面">
           <el-upload
@@ -104,7 +104,7 @@
             :on-success="uploadCover"
             :on-remove="handleDelete"
           >
-            <i class="el-icon-upload" v-if="albumForum.albumCover == ''" />
+            <i class="el-icon-upload" v-if="albumForum.albumCover == ''"/>
             <div class="el-upload__text" v-if="albumForum.albumCover == ''">
               将文件拖到此处，或<em>点击上传</em>
             </div>
@@ -133,12 +133,12 @@
     <!-- 删除对话框 -->
     <el-dialog :visible.sync="isdelete" width="30%">
       <div class="dialog-title-container" slot="title">
-        <i class="el-icon-warning" style="color: #ff9900" />提示
+        <i class="el-icon-warning" style="color: #ff9900"/>提示
       </div>
       <div style="font-size: 1rem">是否删除该相册？</div>
       <div slot="footer">
         <el-button @click="isdelete = false">取 消</el-button>
-        <el-button type="primary" @click="handleDelete"> 确 定 </el-button>
+        <el-button type="primary" @click="handleDelete"> 确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -147,13 +147,14 @@
 <script>
 import {
   listAlbum,
-  getAlbum,
   delAlbum,
   addAlbum,
   updateAlbum,
 } from "@/api/blog/album";
-import { getToken } from "@/utils/auth";
+import {getToken} from "@/utils/auth";
+
 export default {
+  name: "Album",
   created() {
     this.getList();
   },
@@ -161,7 +162,7 @@ export default {
     return {
       // 按钮loading
       buttonLoading: false,
-      headers: { Authorization: "Bearer " + getToken() },
+      headers: {Authorization: "Bearer " + getToken()},
       uploadImgUrl: process.env.VUE_APP_BASE_API + "/system/oss/upload", // 上传的图片服务器地址,
       keywords: "",
       loading: true,
@@ -182,18 +183,18 @@ export default {
       count: 0,
       // 表单校验
       rules: {
-        id: [{ required: true, message: "主键不能为空", trigger: "blur" }],
+        id: [{required: true, message: "主键不能为空", trigger: "blur"}],
         albumName: [
-          { required: true, message: "相册名不能为空", trigger: "blur" },
+          {required: true, message: "相册名不能为空", trigger: "blur"},
         ],
         albumDesc: [
-          { required: true, message: "相册描述不能为空", trigger: "blur" },
+          {required: true, message: "相册描述不能为空", trigger: "blur"},
         ],
         albumCover: [
-          { required: true, message: "相册封面不能为空", trigger: "blur" },
+          {required: true, message: "相册封面不能为空", trigger: "blur"},
         ],
         createTime: [
-          { required: true, message: "创建时间不能为空", trigger: "blur" },
+          {required: true, message: "创建时间不能为空", trigger: "blur"},
         ],
       },
     };
@@ -205,7 +206,7 @@ export default {
         this.$refs.albumTitle.innerHTML = "修改相册";
       } else {
         this.albumForum = {
-          id: null,
+          albumId: null,
           albumName: "",
           albumLabel: "",
           albumCover: "",
@@ -217,12 +218,12 @@ export default {
     },
     checkPhoto(item) {
       this.$router.push({
-        path: "/album/photo",
-        query: { albumId: item.albumId },
+        path: "/blog/photo",
+        query: {albumId: item.albumId},
       });
     },
     checkDelete() {
-      this.$router.push({ path: "/photos/delete" });
+      this.$router.push({path: "/photos/delete"});
     },
     /** 查询相册管理列表 */
     getList() {
@@ -282,7 +283,7 @@ export default {
         this.openModel(data);
       }
     },
-    /** 删除按钮操作 */
+    // 删除按钮操作/
     handleDelete(data) {
       const ids = data;
       this.$modal
@@ -296,7 +297,8 @@ export default {
           this.getList();
           this.$modal.msgSuccess("删除成功");
         })
-        .catch(() => {})
+        .catch(() => {
+        })
         .finally(() => {
           this.loading = false;
         });
@@ -329,6 +331,7 @@ export default {
   width: 100%;
   height: 170px;
 }
+
 .album-cover::before {
   content: "";
   position: absolute;
@@ -338,6 +341,7 @@ export default {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
 }
+
 .album-photo-count {
   display: flex;
   align-items: center;
@@ -351,21 +355,25 @@ export default {
   bottom: 2.6rem;
   color: #fff;
 }
+
 .album-name {
   text-align: center;
   margin-top: 0.5rem;
 }
+
 .album-item {
   position: relative;
   cursor: pointer;
   margin-bottom: 1rem;
 }
+
 .album-opreation {
   position: absolute;
   z-index: 1000;
   top: 0.5rem;
   right: 0.8rem;
 }
+
 .operation-container {
   display: flex;
   align-items: center;
