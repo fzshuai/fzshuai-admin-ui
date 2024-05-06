@@ -25,7 +25,7 @@ export default {
         }
         this.loading = false;
         setToken(res.msg);
-        this.$message.success("Login successful");
+        this.$message.success("登录成功");
         this.$router.go(-2);
       })
       .catch(() => {

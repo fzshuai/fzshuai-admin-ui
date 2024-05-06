@@ -199,7 +199,7 @@ export default {
     },
     doSocialLogin(source) {
       authBinding(source).then(response => {
-        if (response.code === 200) {
+        if (response.code == 200) {
           window.location.href = response.msg;
         } else {
           this.$message.error(response.msg);
