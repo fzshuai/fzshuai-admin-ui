@@ -62,6 +62,7 @@
           <el-form-item label="第三方登录">
             <el-checkbox-group v-model="websiteConfigForm.socialLoginList">
               <el-checkbox label="qq">QQ</el-checkbox>
+              <el-checkbox label="gitee">gitee</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-button
