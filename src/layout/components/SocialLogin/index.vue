@@ -16,6 +16,7 @@ export default {
     };
   },
   mounted() {
+
     socialLogin(this.source, this.code, this.state)
       .then((res) => {
         if (res.code !== 200) {

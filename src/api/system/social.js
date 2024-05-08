@@ -3,12 +3,13 @@ import request from '@/utils/request';
 // 第三方登录
 export function socialLogin(source, code, state) {
   const data = {
+    source,
     code,
     state
   };
   return request({
-    url: '/system/social/social-callback/' + source,
-    method: 'get',
+    url: '/system/social/callback/',
+    method: 'post',
     params: data
   });
 }
