@@ -47,7 +47,7 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/social-callback',
+    path: '/social/callback',
     component: () => import('@/layout/components/SocialLogin/index.vue'),
     hidden: true
   },
@@ -93,11 +93,6 @@ export const constantRoutes = [
       }
     ]
   }
-  // {
-  //   path: '/blog/article',
-  //   component: () => import('@/views/blog/article/article'),
-  //   hidden: true
-  // }
 ]
 
 // 动态路由，
