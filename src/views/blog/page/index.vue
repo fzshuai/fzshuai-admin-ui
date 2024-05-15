@@ -70,7 +70,6 @@
     </el-row>
 
     <el-table v-loading="loading" :data="pageList" @selection-change="handleSelectionChange">
-
       <el-table-column label="页面名" align="center" prop="pageName" />
       <el-table-column label="页面封面" align="center" prop="pageCoverUrl" width="500">
         <template slot-scope="scope">
@@ -95,8 +94,6 @@
           >删除</el-button>
         </template>
       </el-table-column>
-
-
     </el-table>
 
     <pagination
@@ -116,7 +113,7 @@
         <el-form-item label="页面标签" prop="pageLabel">
           <el-input v-model="form.pageLabel" placeholder="请输入页面标签" />
         </el-form-item>
-        <el-form-item label="页面封面">
+        <el-form-item label="页面封面" prop="pageCover">
           <image-upload v-model="form.pageCover"/>
         </el-form-item>
       </el-form>
@@ -167,7 +164,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        id: [
+        pageId: [
           { required: true, message: "页面id不能为空", trigger: "blur" }
         ],
         pageName: [
@@ -189,7 +186,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询页面管理列表 */
+    // 查询页面管理列表
     getList() {
       this.loading = true;
       listPage(this.queryParams).then(response => {
@@ -206,7 +203,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        id: undefined,
+        pageId: undefined,
         pageName: undefined,
         pageLabel: undefined,
         pageCover: undefined,
@@ -217,33 +214,33 @@ export default {
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    // 搜索按钮操作
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** 重置按钮操作 */
+    // 重置按钮操作
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+      this.ids = selection.map(item => item.pageId);
+      this.single = selection.length!==1;
+      this.multiple = !selection.length;
     },
-    /** 新增按钮操作 */
+    // 新增按钮操作
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加页面管理";
     },
-    /** 修改按钮操作 */
+    // 修改按钮操作
     handleUpdate(row) {
       this.loading = true;
       this.reset();
-      const id = row.id || this.ids
+      const id = row.pageId || this.ids
       getPage(id).then(response => {
         this.loading = false;
         this.form = response.data;
@@ -251,12 +248,12 @@ export default {
         this.title = "修改页面管理";
       });
     },
-    /** 提交按钮 */
+    // 提交按钮
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.buttonLoading = true;
-          if (this.form.id != null) {
+          if (this.form.pageId != null) {
             updatePage(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
@@ -276,9 +273,9 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    // 删除按钮操作
     handleDelete(row) {
-      const ids = row.id || this.ids;
+      const ids = row.pageId || this.ids;
       this.$modal.confirm('是否确认删除页面管理编号为"' + ids + '"的数据项？').then(() => {
         this.loading = true;
         return delPage(ids);
@@ -291,7 +288,7 @@ export default {
         this.loading = false;
       });
     },
-    /** 导出按钮操作 */
+    // 导出按钮操作
     handleExport() {
       this.download('page/page/export', {
         ...this.queryParams
