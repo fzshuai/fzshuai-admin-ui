@@ -123,7 +123,7 @@
         >
 
           <el-row style="width:600px">
-            <el-form-item label="博主头像">
+            <el-form-item label="用户头像">
               <image-upload v-model="websiteConfigForm.userAvatar"/>
             </el-form-item>
             <el-form-item label="游客头像">
