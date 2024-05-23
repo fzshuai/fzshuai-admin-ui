@@ -61,7 +61,7 @@
           </el-form-item>
           <el-form-item label="第三方登录">
             <el-checkbox-group v-model="websiteConfigForm.socialLoginList">
-              <el-checkbox label="QQ">QQ</el-checkbox>
+              <el-checkbox label="qq">QQ</el-checkbox>
               <el-checkbox label="gitee">gitee</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -81,11 +81,11 @@
           <el-checkbox-group v-model="websiteConfigForm.socialUrlList">
             <el-form-item label="QQ">
               <el-input
-                v-model="websiteConfigForm.QQ"
+                v-model="websiteConfigForm.qq"
                 size="small"
                 style="width:400px;margin-right:1rem"
               />
-              <el-checkbox label="QQ">是否展示</el-checkbox>
+              <el-checkbox label="qq">是否展示</el-checkbox>
             </el-form-item>
             <el-form-item label="Github">
               <el-input
@@ -223,7 +223,7 @@ export default {
         websiteRecordNo: "",
         socialLoginList: [],
         socialUrlList: [],
-        QQ: "",
+        qq: "",
         github: "",
         gitee: "",
         userAvatar: "",
